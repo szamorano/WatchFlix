@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WatchFlix.Models;
+using WatchFlix.ViewModels;
 
 namespace WatchFlix.Controllers
 {
@@ -19,6 +20,16 @@ namespace WatchFlix.Controllers
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
+        }
+
+        public ActionResult New()
+        {
+            var membershipTypes = db.MembershipTypes.ToList();
+            var viewModel = new NewCustomerViewModel
+            {
+                MembershipTypes = membershipTypes
+            };
+            return View(viewModel);
         }
 
         public ViewResult Index()
