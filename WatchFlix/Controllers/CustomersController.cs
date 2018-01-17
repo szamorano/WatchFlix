@@ -33,9 +33,22 @@ namespace WatchFlix.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Customer customer)
+        public ActionResult Save(Customer customer)
         {
-            db.Customers.Add(customer);
+            if (customer.Id == 0)
+            {
+                db.Customers.Add(customer);
+            }
+            else
+            {
+                var customerInDb = db.Customers.Single(c => c.Id == customer.Id);
+
+                customerInDb.Name = customer.Name;
+                customerInDb.Birthdate = customer.Birthdate;
+                customerInDb.MembershipTypeId = customer.MembershipTypeId;
+                customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index", "Customers");
         }
