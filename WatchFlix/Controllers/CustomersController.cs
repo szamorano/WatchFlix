@@ -32,6 +32,14 @@ namespace WatchFlix.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public ActionResult Create(Customer customer)
+        {
+            db.Customers.Add(customer);
+            db.SaveChanges();
+            return RedirectToAction("Index", "Customers");
+        }
+
         public ViewResult Index()
         {
             var customers = db.Customers.ToList();
