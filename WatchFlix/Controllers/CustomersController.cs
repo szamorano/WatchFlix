@@ -25,11 +25,11 @@ namespace WatchFlix.Controllers
         public ActionResult New()
         {
             var membershipTypes = db.MembershipTypes.ToList();
-            var viewModel = new NewCustomerViewModel
+            var viewModel = new CustomerFormViewModel
             {
                 MembershipTypes = membershipTypes
             };
-            return View(viewModel);
+            return View("CustomerForm", viewModel);
         }
 
         [HttpPost]
@@ -55,6 +55,22 @@ namespace WatchFlix.Controllers
                 return HttpNotFound();
 
             return View(customer);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var customer = db.Customers.SingleOrDefault(c => c.Id == id);
+
+            if (customer == null)
+                return HttpNotFound();
+
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = db.MembershipTypes.ToList()
+            };
+
+            return View("CustomerForm", viewModel);
         }
 
     }
