@@ -5,6 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WatchFlix.Models;
+using System.Data.Entity;
+using WatchFlix.DTOs;
+using AutoMapper;
 
 namespace WatchFlix.Controllers.Api
 {
@@ -18,38 +21,41 @@ namespace WatchFlix.Controllers.Api
         }
 
         // GET /api/customers
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerDTO> GetCustomers()
         {
-            return db.Customers.ToList();
+            return db.Customers.ToList().Select(Mapper.Map<Customer, CustomerDTO>);
         }
 
         // GET /api/customers/1
-        public Customer GetCustomer(int id)
+        public IHttpActionResult GetCustomer(int id)
         {
             var customer = db.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound();
 
-            return customer;
+            return Ok(Mapper.Map<Customer, CustomerDTO>(customer));
         }
 
         // POST /api/customers
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public IHttpActionResult CreateCustomer(CustomerDTO customerDTO)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
+            var customer =  Mapper.Map<CustomerDTO, Customer> (customerDTO);
             db.Customers.Add(customer);
             db.SaveChanges();
 
-            return customer;
+            customerDTO.Id = customer.Id;
+
+            return Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDTO);
         }
 
         // PUT /api/customers/1
         [HttpPut]
-        public void UpdateCustomer(int id, Customer customer)
+        public void UpdateCustomer(int id, CustomerDTO customerDTO)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -59,16 +65,15 @@ namespace WatchFlix.Controllers.Api
             if (customerInDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            customerInDb.Name = customer.Name;
-            customerInDb.Birthdate = customer.Birthdate;
-            customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            Mapper.Map(customerDTO, customerInDb);
+
 
             db.SaveChanges();
 
         }
 
         // DELETE /api/customers/1
+        [HttpDelete]
         public void DeleteCustomer(int id)
         {
             var customerInDb = db.Customers.SingleOrDefault(c => c.Id == id);
@@ -77,6 +82,7 @@ namespace WatchFlix.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
             db.Customers.Remove(customerInDb);
+            db.SaveChanges();
         }
 
     }
