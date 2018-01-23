@@ -15,6 +15,7 @@ namespace WatchFlix.App_Start
             // Domain to Dto
             Mapper.CreateMap<Customer, CustomerDTO>();
             Mapper.CreateMap<Movie, MovieDto>();
+            Mapper.CreateMap<MembershipType, MembershipTypeDto>();
 
             // Dto to Domain
             Mapper.CreateMap<CustomerDTO, Customer>()

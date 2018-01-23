@@ -68,9 +68,8 @@ namespace WatchFlix.Controllers
 
         public ViewResult Index()
         {
-            var customers = db.Customers.ToList();
 
-            return View(customers);
+            return View();
         }
 
         public ActionResult Details(int id)

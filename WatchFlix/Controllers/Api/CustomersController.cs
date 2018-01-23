@@ -23,7 +23,10 @@ namespace WatchFlix.Controllers.Api
         // GET /api/customers
         public IHttpActionResult GetCustomers()
         {
-            var customerDtos = db.Customers.ToList().Select(Mapper.Map<Customer, CustomerDTO>);
+            var customerDtos = db.Customers
+                .Include(c => c.MembershipType)
+                .ToList()
+                .Select(Mapper.Map<Customer, CustomerDTO>);
 
             return Ok(customerDtos);
         }
