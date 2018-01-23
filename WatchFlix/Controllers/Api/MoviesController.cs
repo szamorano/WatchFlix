@@ -7,26 +7,30 @@ using System.Net.Http;
 using System.Web.Http;
 using WatchFlix.DTOs;
 using WatchFlix.Models;
+using System.Data.Entity;
 
 namespace WatchFlix.Controllers.Api
 {
     public class MoviesController : ApiController
     {
-        private ApplicationDbContext _context;
+        private ApplicationDbContext db;
 
         public MoviesController()
         {
-            _context = new ApplicationDbContext();
+            db = new ApplicationDbContext();
         }
 
         public IEnumerable<MovieDto> GetMovies()
         {
-            return _context.Movies.ToList().Select(Mapper.Map<Movie, MovieDto>);
+            return db.Movies
+                .Include(mbox => mbox.Genre)
+                .ToList()
+                .Select(Mapper.Map<Movie, MovieDto>);
         }
 
         public IHttpActionResult GetMovie(int id)
         {
-            var movie = _context.Movies.SingleOrDefault(c => c.Id == id);
+            var movie = db.Movies.SingleOrDefault(c => c.Id == id);
 
             if (movie == null)
                 return NotFound();
@@ -41,8 +45,8 @@ namespace WatchFlix.Controllers.Api
                 return BadRequest();
 
             var movie = Mapper.Map<MovieDto, Movie>(movieDto);
-            _context.Movies.Add(movie);
-            _context.SaveChanges();
+            db.Movies.Add(movie);
+            db.SaveChanges();
 
             movieDto.Id = movie.Id;
             return Created(new Uri(Request.RequestUri + "/" + movie.Id), movieDto);
@@ -54,14 +58,14 @@ namespace WatchFlix.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var movieInDb = _context.Movies.SingleOrDefault(c => c.Id == id);
+            var movieInDb = db.Movies.SingleOrDefault(c => c.Id == id);
 
             if (movieInDb == null)
                 return NotFound();
 
             Mapper.Map(movieDto, movieInDb);
 
-            _context.SaveChanges();
+            db.SaveChanges();
 
             return Ok();
         }
@@ -69,13 +73,13 @@ namespace WatchFlix.Controllers.Api
         [HttpDelete]
         public IHttpActionResult DeleteMovie(int id)
         {
-            var movieInDb = _context.Movies.SingleOrDefault(c => c.Id == id);
+            var movieInDb = db.Movies.SingleOrDefault(c => c.Id == id);
 
             if (movieInDb == null)
                 return NotFound();
 
-            _context.Movies.Remove(movieInDb);
-            _context.SaveChanges();
+            db.Movies.Remove(movieInDb);
+            db.SaveChanges();
 
             return Ok();
         }

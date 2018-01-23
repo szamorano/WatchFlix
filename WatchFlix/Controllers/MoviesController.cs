@@ -25,11 +25,13 @@ namespace WatchFlix.Controllers
  
         public ViewResult Index()
         {
-            var movies = db.Movies.ToList();
-
-            return View(movies);
+            if (User.IsInRole(RoleName.CanManageMovies))
+                return View("List");
+            else
+                return View("ReadOnlyList");
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ViewResult New()
         {
             var genres = db.Genres.ToList();
