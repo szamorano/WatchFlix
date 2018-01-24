@@ -18,8 +18,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <IISExpressSSLPort>44348</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -276,6 +276,10 @@
     <Compile Include="Migrations\201801240432278_AddDrivingLicenseToApplicationUser.cs" />
     <Compile Include="Migrations\201801240432278_AddDrivingLicenseToApplicationUser.Designer.cs">
       <DependentUpon>201801240432278_AddDrivingLicenseToApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801242038025_AddPhoneToApplicationUser.cs" />
+    <Compile Include="Migrations\201801242038025_AddPhoneToApplicationUser.Designer.cs">
+      <DependentUpon>201801242038025_AddPhoneToApplicationUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -602,6 +606,9 @@
     <EmbeddedResource Include="Migrations\201801240432278_AddDrivingLicenseToApplicationUser.resx">
       <DependentUpon>201801240432278_AddDrivingLicenseToApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801242038025_AddPhoneToApplicationUser.resx">
+      <DependentUpon>201801242038025_AddPhoneToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -621,7 +628,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58142</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:58142/</IISUrl>
+          <IISUrl>https://localhost:44348/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

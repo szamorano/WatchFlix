@@ -54,9 +54,9 @@ namespace WatchFlix
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "1790139391289892",
+               appSecret: "4e5d35cf33630784f09756f57a735bba");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
