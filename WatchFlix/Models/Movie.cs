@@ -28,5 +28,6 @@ namespace WatchFlix.Models
         [Display(Name = "Number In Stock")]
         public byte NumberInStock { get; set; }
 
+        public byte NumberAvailable { get; set; }
     }
 }
