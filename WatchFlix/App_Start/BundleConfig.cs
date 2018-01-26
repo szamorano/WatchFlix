@@ -33,6 +33,7 @@ namespace WatchFlix
                       "~/content/datatables/css/datatables.bootstrap.css",
                       "~/content/typeahead.css",
                       "~/content/toastr.css",
+                      "~/Content/bootstrap-theme2.css",
                       "~/Content/site.css"));
         }
     }
